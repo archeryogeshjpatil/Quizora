@@ -13,7 +13,8 @@ export const testService = {
     api.post(`/tests/${id}/submit`, data),
   autoSave: (id: string, data: { attemptId: string; responses: Record<string, string> }) =>
     api.post(`/tests/${id}/auto-save`, data),
-  getReview: (id: string) => api.get(`/tests/${id}/review`),
+  getReview: (id: string, attemptId: string) =>
+    api.get(`/tests/${id}/review`, { params: { attemptId } }),
   publishResults: (id: string) => api.post(`/tests/${id}/publish-results`),
   getQuestionUsage: (questionIds: string[]) => api.post('/tests/question-usage', { questionIds }),
   autoCreate: (data: any) => api.post('/tests/auto-create', data),

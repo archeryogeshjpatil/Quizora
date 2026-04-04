@@ -17,6 +17,15 @@ interface ReviewQuestion {
   explanation?: string;
 }
 
+interface ReviewPayload {
+  test: { title: string; subject: string };
+  score: number;
+  totalMarks: number;
+  percentage: number;
+  timeTaken?: number;
+  review: ReviewQuestion[];
+}
+
 export function ReviewPage() {
   const { t } = useTranslation();
   const { testId } = useParams<{ testId: string }>();
@@ -24,7 +33,7 @@ export function ReviewPage() {
   const attemptId = searchParams.get('attemptId');
   const navigate = useNavigate();
 
-  const [review, setReview] = useState<any>(null);
+  const [review, setReview] = useState<ReviewPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -38,15 +47,29 @@ export function ReviewPage() {
   const [aiLoading, setAiLoading] = useState(false);
 
   useEffect(() => {
-    if (testId && attemptId) {
-      testService.getReview(testId + `?attemptId=${attemptId}`)
-        .then((res) => setReview(res.data))
-        .catch((err) => setError(err.response?.data?.error || 'Failed to load review'))
-        .finally(() => setLoading(false));
+    if (!testId || !attemptId) {
+      setError('Review link is incomplete');
+      setLoading(false);
+      return;
     }
+
+    testService.getReview(testId, attemptId)
+      .then((res) => {
+        const data = res.data;
+        if (!data || !Array.isArray(data.review) || !data.test) {
+          setError('Review data is not available');
+          return;
+        }
+        setReview(data);
+      })
+      .catch((err) => setError(err.response?.data?.error || 'Failed to load review'))
+      .finally(() => setLoading(false));
   }, [testId, attemptId]);
 
   const handleAskAI = async (questionIndex: number, provider: string) => {
+    if (!review?.review?.[questionIndex]) {
+      return;
+    }
     const q = review.review[questionIndex];
     setAiModal({ questionIndex, provider });
     setAiResponse('');
@@ -81,7 +104,7 @@ export function ReviewPage() {
     return <div className="flex justify-center py-20"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" /></div>;
   }
 
-  if (error || !review) {
+  if (error || !review || !Array.isArray(review.review)) {
     return (
       <div className="max-w-md mx-auto text-center py-20">
         <p className="text-red-500 mb-4">{error || 'Review not available'}</p>
