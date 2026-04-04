@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* ═══ Quizora Design System ═══ */
+/* Inspired by archerinfotech.in — Light professional theme */
+/* Primary: Teal/Emerald | Accent: Amber/Orange | Neutral: Slate */
+
+:root {
+  --q-primary: #0d9488;
+  --q-primary-light: #14b8a6;
+  --q-primary-dark: #0f766e;
+  --q-accent: #f59e0b;
+  --q-accent-light: #fbbf24;
+  --q-bg: #f8fafc;
+  --q-card: #ffffff;
+  --q-sidebar: #0f172a;
+  --q-text: #1e293b;
+  --q-muted: #64748b;
+  --q-border: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--q-text);
+  background: var(--q-bg);
+}
+
+html { scroll-behavior: smooth; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Focus */
+*:focus-visible { outline: 2px solid var(--q-primary); outline-offset: 2px; border-radius: 4px; }
+
+/* Transitions */
+button, a, input, select, textarea { transition: all 0.2s ease; }
+
+/* Tables */
+table { border-collapse: separate; border-spacing: 0; }
+table thead th { font-weight: 600; letter-spacing: 0.03em; }
+table tbody tr { transition: background-color 0.15s ease; }
+
+/* Inputs */
+input, select, textarea { font-size: 14px; }
+input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1); }
+
+/* Select arrow */
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeIn 0.3s ease; }
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.animate-slide-up { animation: slideUp 0.35s ease; }
+
+/* Modal overlay */
+.fixed.inset-0 { animation: fadeIn 0.15s ease; }
+
+/* Card hover */
+.q-card {
+  background: white;
+  border: 1px solid var(--q-border);
+  border-radius: 16px;
+  transition: all 0.25s ease;
+}
+.q-card:hover {
+  border-color: rgba(13, 148, 136, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Prose */
+.prose code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+.prose pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; }
+.latex-formula { font-family: 'Computer Modern', serif; font-style: italic; }
